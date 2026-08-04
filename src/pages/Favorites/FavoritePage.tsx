@@ -2,7 +2,6 @@ import EmployeeCard from "@/components/employee/EmployeeCard";
 import EmployeeCardSkeleton from "@/components/employee/EmployeeCardSkeleton";
 import { useGetEmployeeByIdQuery } from "@/features/employees/employeesApi";
 import { useFavorites } from "@/hooks/useFavorites";
-import React from "react";
 
 interface FavoriteEmployeeItemProps {
   id: number;

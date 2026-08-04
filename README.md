@@ -1,75 +1,100 @@
-# React + TypeScript + Vite
+# Employee Directory
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript + Vite employee directory application that displays employee data, supports search, filtering, sorting, pagination, and favorites.
 
-Currently, two official plugins are available:
+## Project setup instructions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Prerequisites
 
-## React Compiler
+- Node.js 18+
+- npm 9+
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Install dependencies
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Run locally
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Lint the project
+
+```bash
+npm run lint
+```
+
+## Assumptions made
+
+- The project uses the DummyJSON users API as the remote data source.
+- Search, filtering, and sorting are handled via API-driven queries where possible.
+- The employee listing is rendered as a dashboard with server-side pagination support.
+- Favorites are stored locally in browser storage rather than in a backend service.
+- The app is designed as a frontend-only prototype with a lightweight state architecture.
+
+## Folder structure explanation
+
+```text
+src/
+  components/
+    common/          Shared reusable UI helpers such as pagination
+    employee/        Employee card, filter bar, and related views
+    ui/              Reusable primitives styled for the app shell
+  constants/         Static app constants
+  context/           Theme and favorites context providers
+  features/
+    employees/       RTK Query API slice for employee endpoints
+  hooks/             Custom hooks for favorites, theme, and local storage
+  layouts/           Page layout containers
+  lib/               Utility helpers and theme configuration
+  pages/             Route-driven screen components
+  routes/            Application route configuration
+  store.ts           Redux store configuration
+  types/             TypeScript interfaces and shared domain types
+  utils/             Filter derivation and filtering utilities
+```
+
+## State management approach
+
+The application uses a combination of:
+
+- React local state for page-level UI concerns such as filters and pagination
+- Redux Toolkit Query for remote API data fetching and caching
+- Context API for theme and favorites state
+- Local storage hooks for persisting favorites across sessions
+
+This separation keeps the app predictable:
+
+- API data is managed in the RTK Query slice
+- route-level UI controls stay in React state
+- cross-cutting preferences such as theme/favorites use context providers
+
+## Performance considerations
+
+- RTK Query caches API responses and avoids unnecessary refetches.
+- Dashboard pagination requests only the required slice of data rather than loading the full dataset at once.
+- Filtering and sorting are pushed to the backend where supported to reduce client-side work.
+- Card rendering remains lightweight and uses a grid layout optimized for a concise UI.
+- Favorites are persisted using a small local-storage hook rather than a heavy global store.
+
+## Future improvements
+
+- Replace native select controls with a fully styled custom dropdown component for a more consistent design system.
+- Add URL query parameter synchronization for search, filters, sort, and page state.
+- Introduce a dedicated loading/error boundary pattern for more graceful UX.
+- Add user-level pagination controls such as page-size selection and keyboard navigation.
+- Add unit and integration tests for sorting, filtering, and pagination flows.
+- Move favorites persistence to a backend/API if the product grows into a multi-user system.
+
+## Notes
+
+This project follows a modern React + TypeScript frontend structure and is suitable for a small-to-medium sized employee directory dashboard.
