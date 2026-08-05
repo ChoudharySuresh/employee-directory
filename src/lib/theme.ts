@@ -1,6 +1,6 @@
-export type Theme = "light" | "dark";
+import { THEME_STORAGE_KEY } from "@/constants/constant";
 
-export const THEME_STORAGE_KEY = "app-theme";
+export type Theme = "light" | "dark";
 
 export function getStoredTheme(): Theme | null {
   if (typeof window === "undefined") return null;
