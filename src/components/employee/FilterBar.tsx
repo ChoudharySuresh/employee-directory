@@ -20,6 +20,18 @@ const FilterBar = ({
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     onChange({ ...filters, [key]: value });
 
+  const handleAgeMinChange = (value: string) => {
+    const parsed = Number(value);
+    const nextAgeMin = Math.max(0, Number.isFinite(parsed) ? parsed : 0);
+    update("ageMin", Math.min(nextAgeMin, filters.ageMax));
+  };
+
+  const handleAgeMaxChange = (value: string) => {
+    const parsed = Number(value);
+    const nextAgeMax = Math.max(0, Number.isFinite(parsed) ? parsed : 0);
+    update("ageMax", Math.min(Math.max(nextAgeMax, filters.ageMin), 200));
+  };
+
   return (
     <div className="flex flex-row flex-nowrap items-center gap-3 overflow-x-auto p-2">
       <input
@@ -73,15 +85,19 @@ const FilterBar = ({
         <span className="whitespace-nowrap">Age</span>
         <input
           type="number"
+          min={0}
+          max={filters.ageMax}
           value={filters.ageMin}
-          onChange={(e) => update("ageMin", Number(e.target.value))}
+          onChange={(e) => handleAgeMinChange(e.target.value)}
           className="w-16 rounded border border-border bg-background px-2 py-1 text-foreground"
         />
         <span>-</span>
         <input
           type="number"
+          min={filters.ageMin}
+          max={100}
           value={filters.ageMax}
-          onChange={(e) => update("ageMax", Number(e.target.value))}
+          onChange={(e) => handleAgeMaxChange(e.target.value)}
           className="w-16 rounded border border-border bg-background px-2 py-1 text-foreground"
         />
       </div>
@@ -93,8 +109,6 @@ const FilterBar = ({
       >
         <option value="name">Sort by Name</option>
         <option value="age">Sort by Age</option>
-        <option value="company">Sort by Company</option>
-        <option value="country">Sort by Country</option>
       </select>
 
       <select
