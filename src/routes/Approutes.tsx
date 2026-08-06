@@ -4,6 +4,7 @@ import MainLayout from "@/layouts/MainLayout";
 import DashboardPage from "@/pages/Dashboard/DashboardPage";
 import FavoritePage from "@/pages/Favorites/FavoritePage";
 import EmployeeDetails from "@/pages/Employee/EmployeeDetails";
+import NotFoundPage from "@/pages/Notfound/NotFoundPage";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
           <Route element={<DashboardPage />} path="/" />
           <Route element={<FavoritePage />} path="/favorites" />
           <Route element={<EmployeeDetails />} path="/employee/:id" />
+          <Route element={<NotFoundPage />} path="*" />
         </Route>
       </Routes>
     </BrowserRouter>
