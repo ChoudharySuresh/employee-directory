@@ -78,8 +78,17 @@ const Navbar = () => {
 
         {/* Mobile Actions */}
         <div className="flex items-center gap-2 md:hidden">
-          <Button variant="outline" size="icon">
-            <LuSun />
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Toggle Theme"
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? (
+              <LuSun className="text-lg" />
+            ) : (
+              <LuMoon className="text-lg" />
+            )}
           </Button>
 
           <Button
